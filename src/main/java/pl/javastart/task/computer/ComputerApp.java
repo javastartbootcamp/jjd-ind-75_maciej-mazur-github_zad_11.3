@@ -17,8 +17,8 @@ public class ComputerApp {
     public static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        Processor processor = new Processor("Core i5-6600K", "Intel", "12345", 3500, 40, 80, printer);
-        Memory memory = new Memory("CL16 Renegade Black", "Kingston", "456789", 3200, 40, 100, printer, 32);
+        Processor processor = new Processor("Core i5-6600K", "Intel", "12345", 3500, 40, 80);
+        Memory memory = new Memory("CL16 Renegade Black", "Kingston", "456789", 3200, 40, 100, 32);
         HardDrive hardDrive = new HardDrive("BARRACUDA", "Seagate", "102938475", 8);
 
         Computer computer = new Computer(processor, memory, hardDrive, printer, "Dell Inspiron 3020 S");
@@ -52,11 +52,11 @@ public class ComputerApp {
 
     private static void printOptions() {
         printer.printMessage("""
-                Wybierz jedną z opcji:
-                > 1 - podkręcenie częstotliwości procesora lub RAM-u
-                > 2 - Wyświetl szczegółowe dane o podzespołach komputera
-                > 3 - Koniec programu
+                \nWybierz jedną z opcji:
+                > %d - podkręcenie częstotliwości procesora lub RAM-u
+                > %d - Wyświetl szczegółowe dane o podzespołach komputera
+                > %d - Koniec programu
 
-                Którą opcję wybierasz?\s""");
+                Którą opcję wybierasz?\s""".formatted(OVERCLOCK, PRINT_COMPUTER_INFO, QUIT_PROGRAM));
     }
 }

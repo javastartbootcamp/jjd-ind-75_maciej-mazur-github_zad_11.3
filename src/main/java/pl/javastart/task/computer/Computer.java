@@ -31,6 +31,7 @@ public class Computer {
     public void overclock() {
         boolean quit = false;
         int choice;
+        int targetClockSpeed;
 
         do {
             printOptions();
@@ -42,11 +43,17 @@ public class Computer {
                 switch (choice) {
                     case PROCESSOR -> {
                         printer.printMessage(processor.getConfigInfo());
-                        processor.overclock();
+                        targetClockSpeed = readTargetClockSpeed();
+                        processor.overclock(targetClockSpeed);
+                        printer.printMessage("\nPodkręcenie częstotliwości taktowania procesora na " + targetClockSpeed +
+                                "MHz przebiegło pomyślnie.\n" + processor.getConfigInfo());
                     }
                     case MEMORY -> {
                         printer.printMessage(memory.getConfigInfo());
-                        memory.overclock();
+                        targetClockSpeed = readTargetClockSpeed();
+                        memory.overclock(targetClockSpeed);
+                        printer.printMessage("\nPodkręcenie częstotliwości taktowania RAM-u na " + targetClockSpeed +
+                                "MHz przebiegło pomyślnie.\n" + processor.getConfigInfo());
                     }
                     case BACK_TO_MAIN_MENU -> quit = true;
                     default -> throw new IllegalArgumentException();
@@ -66,11 +73,21 @@ public class Computer {
 
     private void printOptions() {
         printer.printMessage("""
-                Wybierz jedną z poniższych opcji podkręcania czestotliwości taktowania:
-                > 1 - Podkręć częstotliwość taktowania procesora
-                > 2 - Podkręć częstotliwość taktowania RAM-u
-                > 3 - Powrót do menu głównego
-                Co wybierasz?\s""");
+                \nWybierz jedną z poniższych opcji podkręcania czestotliwości taktowania:
+                > %d - Podkręć częstotliwość taktowania procesora
+                > %d - Podkręć częstotliwość taktowania RAM-u
+                > %d - Powrót do menu głównego
+                Co wybierasz?\s""".formatted(PROCESSOR, MEMORY, BACK_TO_MAIN_MENU));
+    }
+
+    private int readTargetClockSpeed() {
+        printer.printMessage("Podaj oczekiwaną częstotliwość taktowania: ");
+        /*
+        potencjalny InputMismatchException zostanie przez tę metodę automatycznie wyrzucony do overclock(), a overclock() przerzuci go wyżej do obsługi
+         */
+        int speedChoice = ComputerApp.scanner.nextInt();
+        ComputerApp.scanner.nextLine();
+        return speedChoice;
     }
 
     @Override

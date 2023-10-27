@@ -1,5 +1,5 @@
 package pl.javastart.task.components;
 
 public interface Overclockable {
-    void overclock();
+    void overclock(int targetClockSpeed);
 }
