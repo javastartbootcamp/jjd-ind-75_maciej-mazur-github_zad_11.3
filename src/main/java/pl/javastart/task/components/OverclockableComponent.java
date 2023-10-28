@@ -1,6 +1,7 @@
 package pl.javastart.task.components;
 
-import pl.javastart.task.exception.IllegalClockSpeedException;
+import pl.javastart.task.exception.DownclockingAttemptException;
+import pl.javastart.task.exception.OverheatingAttemptException;
 import java.util.InputMismatchException;
 
 abstract class OverclockableComponent extends Component implements Overclockable {
@@ -13,16 +14,15 @@ abstract class OverclockableComponent extends Component implements Overclockable
     }
 
     @Override
-    public void overclock(int targetClockSpeed) throws InputMismatchException, IllegalClockSpeedException {
+    public void overclock(int targetClockSpeed) throws InputMismatchException, OverheatingAttemptException {
         if (targetClockSpeed < config.getClockSpeed()) {
-            throw new IllegalClockSpeedException("\nThis is supposed to be an overclocking, not downclocking. "
-                    + targetClockSpeed + " is therefore an incorrect target clock speed.\n");
+            throw new DownclockingAttemptException();
         }
 
         int targetTemperature = config.getTemperature() + (targetClockSpeed - config.getClockSpeed()) / 100 * config.getTemperatureIncrease();
 
         if (targetTemperature > config.getMaxTemperature()) {
-            throw new IllegalClockSpeedException("\n" + targetClockSpeed + " clock speed would burn the component\n");
+            throw new OverheatingAttemptException(targetClockSpeed, targetTemperature);
         }
 
         config.setTemperature(targetTemperature);

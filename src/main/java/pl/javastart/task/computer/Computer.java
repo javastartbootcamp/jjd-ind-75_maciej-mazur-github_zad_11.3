@@ -3,7 +3,8 @@ package pl.javastart.task.computer;
 import pl.javastart.task.components.HardDrive;
 import pl.javastart.task.components.Memory;
 import pl.javastart.task.components.Processor;
-import pl.javastart.task.exception.IllegalClockSpeedException;
+import pl.javastart.task.exception.DownclockingAttemptException;
+import pl.javastart.task.exception.OverheatingAttemptException;
 import pl.javastart.task.printer.Printer;
 
 import java.util.InputMismatchException;
@@ -62,8 +63,13 @@ public class Computer {
                 quit = true;
             } catch (IllegalArgumentException e) {
                 System.err.println("\nPodałeś nieprawidłową opcję. Spróbuj ponownie.\n");
-            } catch (IllegalClockSpeedException e) {
-                System.err.println(e.getMessage());
+            } catch (OverheatingAttemptException e) {
+                System.err.println("\nZadana częstotliwość taktowania (" + e.getTargetClockSpeed() + ") " +
+                        "podniosłaby temperaturę komponentu do " + e.getTargetTemperature() + " stopni, " +
+                        "co doprowadziłoby do przepalenia komponentu. Spróbuj ponownie.\n");
+            } catch (DownclockingAttemptException e) {
+                System.err.println("\nPodjęto próbę zniżenia częstotliwości taktowania. " +
+                        "Ten program umożliwia jedynie zwiększanie tej częstotliwości. Spróbuj ponownie\n");
             } catch (InputMismatchException e) {
                 System.out.println("\nPodałeś wyraz zamiast liczby. Spróbuj ponownie\n");
                 ComputerApp.scanner.nextLine();
